@@ -1,0 +1,93 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  --color-nova-bg: #0b0d12;
+  --color-nova-surface: #12151c;
+  --color-nova-elevated: #1a1f2b;
+  --color-nova-glass: rgb(255 255 255 / 0.06);
+  --color-nova-border: rgb(255 255 255 / 0.1);
+  --color-nova-text: #f4f6fb;
+  --color-nova-muted: #9aa3b5;
+  --color-nova-faint: #6b7385;
+  --color-nova-accent: #7c8cff;
+  --color-nova-cyan: #6ee7ff;
+  --color-nova-violet: #c084fc;
+  --color-nova-success: #34d399;
+  --color-nova-warning: #fbbf24;
+  --color-nova-danger: #f87171;
+
+  --radius-nova-sm: 0.5rem;
+  --radius-nova-md: 0.75rem;
+  --radius-nova-lg: 1rem;
+  --radius-nova-xl: 1.25rem;
+  --radius-nova-2xl: 1.5rem;
+
+  --shadow-nova-soft: 0 8px 32px rgb(0 0 0 / 0.35);
+  --shadow-nova-glow: 0 0 40px rgb(124 140 255 / 0.12);
+}
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+    margin: 0;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    color: var(--color-nova-text);
+    background: var(--color-nova-bg);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow: hidden;
+    user-select: none;
+  }
+
+  ::selection {
+    background: rgb(124 140 255 / 0.35);
+  }
+
+  button,
+  input {
+    font: inherit;
+  }
+
+  input,
+  textarea {
+    user-select: text;
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgb(255 255 255 / 0.12);
+    border-radius: 9999px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
+
+@layer utilities {
+  .drag-region {
+    -webkit-app-region: drag;
+  }
+
+  .no-drag {
+    -webkit-app-region: no-drag;
+  }
+}

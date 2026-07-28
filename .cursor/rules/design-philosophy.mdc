@@ -1,0 +1,43 @@
+---
+description: NovaBrowser Design Philosophy v1.0 — absolute priority over all sprints
+alwaysApply: true
+---
+
+# Design Philosophy v1.0 (absolute priority)
+
+NovaBrowser is a **professional web browser**, not a desktop app or React dashboard.
+
+## Hierarchy (never invert)
+
+1. Chromium / WebView  
+2. Tabs  
+3. Address bar  
+4. Navigation  
+5. Browser features  
+6. Nova features  
+
+**Browser first. Nova Ecosystem second** — like Chrome→Google, Edge→Microsoft, Arc→Spaces.
+
+## Hard rules
+
+- Web content owns ~**95%** of the window. Chrome must nearly disappear.
+- If a UI element does not improve navigation, **delete it**.
+- Home = **New Tab only** (logo, search, favorites, recents, workspace, Nova quick links). No dashboard, no widgets, no big panels.
+- All Nova features are **`nova://` internal tabs** — never separate windows or app panels.
+- Permanent chrome only: **tabs, toolbar, address bar, nav buttons, collapsible icon sidebar, WebView**.
+- Sidebar: icons only, hover-expand, never wide, never the hero.
+- Toolbar: Back, Forward, Refresh, Address Bar, New Tab, Profile, Ryuk — stop.
+- Ryuk accompanies browsing; it is **not** the home experience and must not replace the browser.
+- Do not build AI / NovaCloud / NovaDocs product features until the browser itself feels native and excellent.
+- User must think: *"professional browser"* — never *"app with a browser inside"*.
+- Forget Electron/React in the visual result: speed, elegance, fluidity, precision, simplicity.
+
+## Examples
+
+```text
+✅ nova://settings opens as a normal tab in the WebView
+❌ Settings as a sidebar panel, modal app screen, or separate window
+
+✅ New Tab = quiet NTP like Chrome
+❌ New Tab = dashboard with cards, sprint widgets, marketing panels
+```
