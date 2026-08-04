@@ -44,10 +44,10 @@ export function Sidebar() {
         'no-drag relative z-30 flex h-full shrink-0 flex-col',
         'border-r border-white/[0.06] bg-[#0c0e13]',
         'transition-[width] duration-200 ease-out',
-        expanded ? 'w-40' : 'w-11',
+        expanded ? 'w-20' : 'w-11',
       )}
     >
-      <nav className="flex flex-1 flex-col gap-0.5 px-1.5 pt-2 pb-2">
+      <nav className="flex flex-1 flex-col gap-0.5 px-1 pt-2 pb-2">
         {NAV_ITEMS.map(({ page, label, icon: Icon }) => {
           const href = toNovaUrl(page)
           const isActive =
@@ -62,14 +62,14 @@ export function Sidebar() {
               title={label}
               onClick={() => openInternalPage(href)}
               className={cn(
-                'flex h-8 items-center gap-2.5 rounded-md px-2 text-left transition-colors',
+                'flex h-7 items-center gap-2 rounded-md px-1.5 text-left transition-colors',
                 isActive
                   ? 'bg-white/[0.08] text-nova-text'
                   : 'text-nova-faint hover:bg-white/[0.04] hover:text-nova-muted',
               )}
             >
               <Icon className="h-4 w-4 shrink-0" strokeWidth={1.6} />
-              {expanded && <span className="truncate text-[12px]">{label}</span>}
+              {expanded && <span className="truncate text-[11px]">{label}</span>}
             </button>
           )
         })}

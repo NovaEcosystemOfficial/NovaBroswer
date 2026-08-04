@@ -91,3 +91,12 @@
     -webkit-app-region: no-drag;
   }
 }
+
+@keyframes nova-load {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(400%);
+  }
+}

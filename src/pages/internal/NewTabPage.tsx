@@ -1,20 +1,12 @@
 import { useBrowserStore } from '@/store/browserStore'
 import { toNovaUrl } from '@/services/protocol'
 import { NOVA_BRAND } from '@/utils/constants'
-import type { FavoriteSite, RecentActivity } from '@/types'
+import { formatVisitedAt } from '@/services/storage'
 
-const FAVORITES: FavoriteSite[] = [
-  { id: 'f1', title: 'Workspace', url: toNovaUrl('workspace') },
-  { id: 'f2', title: 'Bookmarks', url: toNovaUrl('bookmarks') },
-  { id: 'f3', title: 'History', url: toNovaUrl('history') },
-  { id: 'f4', title: 'Downloads', url: toNovaUrl('downloads') },
-  { id: 'f5', title: 'Settings', url: toNovaUrl('settings') },
-]
-
-const RECENTS: RecentActivity[] = [
-  { id: 'r1', title: 'Bookmarks', url: toNovaUrl('bookmarks'), timestamp: '2h' },
-  { id: 'r2', title: 'Workspace', url: toNovaUrl('workspace'), timestamp: 'Yesterday' },
-  { id: 'r3', title: 'Downloads', url: toNovaUrl('downloads'), timestamp: 'Mon' },
+const FALLBACK_SHORTCUTS = [
+  { id: 'f1', title: 'Google', url: 'https://www.google.com' },
+  { id: 'f2', title: 'Wikipedia', url: 'https://www.wikipedia.org' },
+  { id: 'f3', title: 'GitHub', url: 'https://github.com' },
 ]
 
 const NOVA_LINKS = [
@@ -29,6 +21,19 @@ export function NewTabPage() {
   const navigateActiveTab = useBrowserStore((s) => s.navigateActiveTab)
   const openInternalPage = useBrowserStore((s) => s.openInternalPage)
   const setAddressDraft = useBrowserStore((s) => s.setAddressDraft)
+  const bookmarks = useBrowserStore((s) => s.bookmarks)
+  const history = useBrowserStore((s) => s.history)
+
+  const shortcuts =
+    bookmarks.length > 0
+      ? bookmarks.slice(0, 5).map((item) => ({
+          id: item.id,
+          title: item.title,
+          url: item.url,
+        }))
+      : FALLBACK_SHORTCUTS
+
+  const recents = history.slice(0, 5)
 
   return (
     <div className="flex h-full overflow-y-auto bg-[#0b0d12]">
@@ -60,11 +65,14 @@ export function NewTabPage() {
         </form>
 
         <div className="mt-9 flex flex-wrap justify-center gap-5">
-          {FAVORITES.map((site) => (
+          {shortcuts.map((site) => (
             <button
               key={site.id}
               type="button"
-              onClick={() => openInternalPage(site.url)}
+              onClick={() => {
+                if (site.url.startsWith('nova://')) openInternalPage(site.url)
+                else navigateActiveTab(site.url)
+              }}
               className="group flex w-14 flex-col items-center gap-2"
             >
               <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#161a24] text-[13px] text-nova-muted transition-colors group-hover:bg-[#1c2230] group-hover:text-nova-text">
@@ -91,22 +99,28 @@ export function NewTabPage() {
 
           <div>
             <p className="mb-2 text-[11px] text-nova-faint">Recent</p>
-            <ul className="space-y-1">
-              {RECENTS.map((item) => (
-                <li key={item.id}>
-                  <button
-                    type="button"
-                    onClick={() => openInternalPage(item.url)}
-                    className="flex w-full items-baseline justify-between gap-4 py-1 text-left"
-                  >
-                    <span className="truncate text-[13px] text-nova-muted hover:text-nova-text">
-                      {item.title}
-                    </span>
-                    <span className="shrink-0 text-[11px] text-nova-faint">{item.timestamp}</span>
-                  </button>
-                </li>
-              ))}
-            </ul>
+            {recents.length === 0 ? (
+              <p className="text-[13px] text-nova-faint">Browse the web to fill recent history.</p>
+            ) : (
+              <ul className="space-y-1">
+                {recents.map((item) => (
+                  <li key={item.id}>
+                    <button
+                      type="button"
+                      onClick={() => navigateActiveTab(item.url)}
+                      className="flex w-full items-baseline justify-between gap-4 py-1 text-left"
+                    >
+                      <span className="truncate text-[13px] text-nova-muted hover:text-nova-text">
+                        {item.title}
+                      </span>
+                      <span className="shrink-0 text-[11px] text-nova-faint">
+                        {formatVisitedAt(item.visitedAt)}
+                      </span>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
 
           <div>

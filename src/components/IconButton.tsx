@@ -14,7 +14,7 @@ export function IconButton({ label, children, className, disabled, ...props }: I
       title={label}
       disabled={disabled}
       className={cn(
-        'inline-flex h-7 w-7 items-center justify-center rounded-md text-nova-muted transition-colors',
+        'inline-flex h-6 w-6 items-center justify-center rounded-md text-nova-muted transition-colors',
         'hover:bg-white/8 hover:text-nova-text',
         'disabled:cursor-not-allowed disabled:opacity-35 disabled:hover:bg-transparent disabled:hover:text-nova-muted',
         className,
