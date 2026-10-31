@@ -1,12 +1,5 @@
 import type { LucideIcon } from 'lucide-react'
-import {
-  Bookmark,
-  Clock,
-  Download,
-  Home,
-  LayoutGrid,
-  Settings,
-} from 'lucide-react'
+import { Bookmark, Clock, Download, Gauge, Home, LayoutGrid, Settings } from 'lucide-react'
 import { useBrowserStore } from '@/store/browserStore'
 import { toNovaUrl, type NovaPageId } from '@/services/protocol'
 import { cn } from '@/utils/cn'
@@ -23,6 +16,7 @@ const NAV_ITEMS: NavItem[] = [
   { page: 'bookmarks', label: 'Bookmarks', icon: Bookmark },
   { page: 'history', label: 'History', icon: Clock },
   { page: 'downloads', label: 'Downloads', icon: Download },
+  { page: 'gx', label: 'GX Control', icon: Gauge },
   { page: 'workspace', label: 'Workspace', icon: LayoutGrid },
   { page: 'settings', label: 'Settings', icon: Settings },
 ]
@@ -47,6 +41,7 @@ export function Sidebar() {
         expanded ? 'w-20' : 'w-11',
       )}
     >
+      <div className="from-nova-gx/50 via-nova-cyan/25 pointer-events-none absolute inset-y-0 right-0 w-px bg-gradient-to-b to-transparent" />
       <nav className="flex flex-1 flex-col gap-0.5 px-1 pt-2 pb-2">
         {NAV_ITEMS.map(({ page, label, icon: Icon }) => {
           const href = toNovaUrl(page)
@@ -54,6 +49,7 @@ export function Sidebar() {
             activeUrl === href ||
             (page === 'newtab' &&
               (activeUrl === toNovaUrl('home') || activeUrl === toNovaUrl('newtab')))
+          const isGx = page === 'gx'
 
           return (
             <button
@@ -64,8 +60,10 @@ export function Sidebar() {
               className={cn(
                 'flex h-7 items-center gap-2 rounded-md px-1.5 text-left transition-colors',
                 isActive
-                  ? 'bg-white/[0.08] text-nova-text'
-                  : 'text-nova-faint hover:bg-white/[0.04] hover:text-nova-muted',
+                  ? isGx
+                    ? 'bg-nova-gx/15 text-nova-gx'
+                    : 'text-nova-text bg-white/[0.08]'
+                  : 'text-nova-faint hover:text-nova-muted hover:bg-white/[0.04]',
               )}
             >
               <Icon className="h-4 w-4 shrink-0" strokeWidth={1.6} />

@@ -33,6 +33,12 @@ export type DownloadSnapshot = {
   endedAt?: number
 }
 
+export type GxLimitsPayload = {
+  cpu: number
+  ram: number
+  network: number
+}
+
 export type NovaBrowserAPI = {
   platform: NodeJS.Platform
   versions: {
@@ -51,6 +57,8 @@ export type NovaBrowserAPI = {
     reload: (tabId: string, ignoreCache?: boolean) => Promise<void>
     stop: (tabId: string) => Promise<void>
     setBounds: (bounds: GuestBounds) => Promise<void>
+    setGxLimits: (limits: GxLimitsPayload) => Promise<GxLimitsPayload>
+    getGxLimits: () => Promise<GxLimitsPayload>
     onNavigation: (callback: (state: GuestNavigationState) => void) => () => void
     onOpenUrl: (callback: (request: GuestOpenUrlRequest) => void) => () => void
   }
@@ -81,6 +89,8 @@ const api: NovaBrowserAPI = {
     reload: (tabId, ignoreCache) => ipcRenderer.invoke('guest:reload', tabId, ignoreCache),
     stop: (tabId) => ipcRenderer.invoke('guest:stop', tabId),
     setBounds: (bounds) => ipcRenderer.invoke('guest:set-bounds', bounds),
+    setGxLimits: (limits) => ipcRenderer.invoke('guest:set-gx-limits', limits),
+    getGxLimits: () => ipcRenderer.invoke('guest:get-gx-limits'),
     onNavigation: (callback) => {
       const listener = (_event: IpcRendererEvent, state: GuestNavigationState) => {
         callback(state)
@@ -103,8 +113,7 @@ const api: NovaBrowserAPI = {
   downloads: {
     cancel: (id) => ipcRenderer.invoke('download:cancel', id),
     open: (id, savePath) => ipcRenderer.invoke('download:open', id, savePath),
-    showInFolder: (id, savePath) =>
-      ipcRenderer.invoke('download:show-in-folder', id, savePath),
+    showInFolder: (id, savePath) => ipcRenderer.invoke('download:show-in-folder', id, savePath),
     getPath: () => ipcRenderer.invoke('download:get-path'),
     onUpdate: (callback) => {
       const listener = (_event: IpcRendererEvent, item: DownloadSnapshot) => {

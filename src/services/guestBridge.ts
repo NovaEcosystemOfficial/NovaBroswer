@@ -1,4 +1,9 @@
-import type { GuestBounds, GuestNavigationState, GuestOpenUrlRequest } from '../../electron/preload'
+import type {
+  GuestBounds,
+  GuestNavigationState,
+  GuestOpenUrlRequest,
+  GxLimitsPayload,
+} from '../../electron/preload'
 
 const noopAsync = async () => undefined
 
@@ -46,6 +51,14 @@ export const guestApi = {
 
   setBounds(bounds: GuestBounds) {
     return window.nova?.guest.setBounds(bounds) ?? noopAsync()
+  },
+
+  setGxLimits(limits: GxLimitsPayload) {
+    return window.nova?.guest.setGxLimits(limits) ?? Promise.resolve({ ...limits })
+  },
+
+  getGxLimits() {
+    return window.nova?.guest.getGxLimits() ?? Promise.resolve({ cpu: 100, ram: 100, network: 100 })
   },
 
   onNavigation(callback: (state: GuestNavigationState) => void) {

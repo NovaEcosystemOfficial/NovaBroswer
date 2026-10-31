@@ -10,6 +10,7 @@ const FALLBACK_SHORTCUTS = [
 ]
 
 const NOVA_LINKS = [
+  { label: 'GX Control', url: toNovaUrl('gx') },
   { label: 'NovaCloud', url: toNovaUrl('cloud') },
   { label: 'NovaDocs', url: toNovaUrl('docs') },
   { label: 'Ryuk', url: toNovaUrl('ai') },
@@ -38,7 +39,7 @@ export function NewTabPage() {
   return (
     <div className="flex h-full overflow-y-auto bg-[#0b0d12]">
       <div className="mx-auto flex w-full max-w-lg flex-col items-center px-6 pt-[18vh] pb-16">
-        <p className="mb-6 text-[22px] font-medium tracking-tight text-nova-text/90">
+        <p className="text-nova-text/90 mb-6 text-[22px] font-medium tracking-tight">
           {NOVA_BRAND.name}
         </p>
 
@@ -57,7 +58,7 @@ export function NewTabPage() {
             name="q"
             type="search"
             placeholder="Search or type a URL"
-            className="h-10 w-full rounded-full bg-[#161a24] px-5 text-[13px] text-nova-text outline-none ring-1 ring-white/[0.07] placeholder:text-nova-faint focus:ring-white/20"
+            className="text-nova-text placeholder:text-nova-faint h-10 w-full rounded-full bg-[#161a24] px-5 text-[13px] ring-1 ring-white/[0.07] outline-none focus:ring-white/20"
             autoComplete="off"
             spellCheck={false}
             autoFocus
@@ -75,10 +76,10 @@ export function NewTabPage() {
               }}
               className="group flex w-14 flex-col items-center gap-2"
             >
-              <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#161a24] text-[13px] text-nova-muted transition-colors group-hover:bg-[#1c2230] group-hover:text-nova-text">
+              <span className="text-nova-muted group-hover:text-nova-text flex h-11 w-11 items-center justify-center rounded-full bg-[#161a24] text-[13px] transition-colors group-hover:bg-[#1c2230]">
                 {site.title.slice(0, 1)}
               </span>
-              <span className="w-full truncate text-center text-[11px] text-nova-faint group-hover:text-nova-muted">
+              <span className="text-nova-faint group-hover:text-nova-muted w-full truncate text-center text-[11px]">
                 {site.title}
               </span>
             </button>
@@ -87,20 +88,20 @@ export function NewTabPage() {
 
         <div className="mt-12 w-full space-y-8">
           <div>
-            <p className="mb-2 text-[11px] text-nova-faint">Workspace</p>
+            <p className="text-nova-faint mb-2 text-[11px]">Workspace</p>
             <button
               type="button"
               onClick={() => openInternalPage(toNovaUrl('workspace'))}
-              className="text-[13px] text-nova-muted transition-colors hover:text-nova-text"
+              className="text-nova-muted hover:text-nova-text text-[13px] transition-colors"
             >
               Continue Product →
             </button>
           </div>
 
           <div>
-            <p className="mb-2 text-[11px] text-nova-faint">Recent</p>
+            <p className="text-nova-faint mb-2 text-[11px]">Recent</p>
             {recents.length === 0 ? (
-              <p className="text-[13px] text-nova-faint">Browse the web to fill recent history.</p>
+              <p className="text-nova-faint text-[13px]">Browse the web to fill recent history.</p>
             ) : (
               <ul className="space-y-1">
                 {recents.map((item) => (
@@ -110,10 +111,10 @@ export function NewTabPage() {
                       onClick={() => navigateActiveTab(item.url)}
                       className="flex w-full items-baseline justify-between gap-4 py-1 text-left"
                     >
-                      <span className="truncate text-[13px] text-nova-muted hover:text-nova-text">
+                      <span className="text-nova-muted hover:text-nova-text truncate text-[13px]">
                         {item.title}
                       </span>
-                      <span className="shrink-0 text-[11px] text-nova-faint">
+                      <span className="text-nova-faint shrink-0 text-[11px]">
                         {formatVisitedAt(item.visitedAt)}
                       </span>
                     </button>
@@ -124,14 +125,14 @@ export function NewTabPage() {
           </div>
 
           <div>
-            <p className="mb-2 text-[11px] text-nova-faint">Nova</p>
+            <p className="text-nova-faint mb-2 text-[11px]">Nova</p>
             <div className="flex flex-wrap gap-x-4 gap-y-1">
               {NOVA_LINKS.map((link) => (
                 <button
                   key={link.label}
                   type="button"
                   onClick={() => openInternalPage(link.url)}
-                  className="text-[12px] text-nova-faint transition-colors hover:text-nova-muted"
+                  className="text-nova-faint hover:text-nova-muted text-[12px] transition-colors"
                 >
                   {link.label}
                 </button>
