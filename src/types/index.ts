@@ -49,6 +49,12 @@ export interface BookmarkEntry {
   createdAt: number
 }
 
+export type GxLimits = {
+  cpu: number
+  ram: number
+  network: number
+}
+
 export type DownloadState = 'progressing' | 'completed' | 'cancelled' | 'interrupted'
 
 export interface DownloadEntry {
@@ -72,10 +78,12 @@ export interface BrowserState {
   history: HistoryEntry[]
   bookmarks: BookmarkEntry[]
   downloads: DownloadEntry[]
+  gxLimits: GxLimits
   hydrated: boolean
 
   getActiveTab: () => BrowserTab | undefined
   hydrate: () => void
+  setGxLimits: (limits: Partial<GxLimits>) => void
   setActiveTab: (id: TabId) => void
   addTab: (url?: string) => void
   closeTab: (id: TabId) => void

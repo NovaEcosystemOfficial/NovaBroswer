@@ -14,12 +14,12 @@ The user must feel they are using a modern, elegant, very fast browser.
 
 Same pattern as:
 
-| Product | First | Second |
-|---------|-------|--------|
-| Chrome | Browser | Google |
-| Edge | Browser | Microsoft |
-| Brave | Browser | Brave Services |
-| Arc | Browser | Workspace |
+| Product         | First       | Second             |
+| --------------- | ----------- | ------------------ |
+| Chrome          | Browser     | Google             |
+| Edge            | Browser     | Microsoft          |
+| Brave           | Browser     | Brave Services     |
+| Arc             | Browser     | Workspace          |
 | **NovaBrowser** | **Browser** | **Nova Ecosystem** |
 
 ## Fundamental rule
@@ -31,12 +31,12 @@ Every UI element needs a real navigation reason — otherwise remove it.
 
 ## Architecture hierarchy
 
-1. Chromium / WebView  
-2. Tabs  
-3. Address Bar  
-4. Navigation  
-5. Browser Features  
-6. Nova Features  
+1. Chromium / WebView
+2. Tabs
+3. Address Bar
+4. Navigation
+5. Browser Features
+6. Nova Features
 
 Never the reverse.
 
@@ -46,12 +46,12 @@ Home is **not** a dashboard. Home is a **New Tab** (Chrome / Edge / Brave / Arc)
 
 Only:
 
-- NovaBrowser logo  
-- Search bar  
-- Favorites  
-- Recents  
-- Workspace  
-- Quick access to Nova services  
+- NovaBrowser logo
+- Search bar
+- Favorites
+- Recents
+- Workspace
+- Quick access to Nova services
 
 No large panels. No dashboard. No invasive widgets.
 
@@ -59,7 +59,7 @@ No large panels. No dashboard. No invasive widgets.
 
 All Nova features live as internal browser pages via `nova://`:
 
-`newtab` · `home` · `history` · `downloads` · `settings` · `bookmarks` · `workspace` · `cloud` · `docs` · `ai`
+`newtab` · `home` · `history` · `downloads` · `settings` · `bookmarks` · `workspace` · `gx` · `cloud` · `docs` · `ai`
 
 They behave like normal tabs — never windows, never apps.
 
@@ -86,5 +86,5 @@ Ryuk is not the start page. It accompanies navigation and appears when needed. P
 
 ## Goal
 
-Opening NovaBrowser should feel like: *“This looks like a professional browser.”*  
-Never: *“This looks like an app with a browser inside.”*
+Opening NovaBrowser should feel like: _“This looks like a professional browser.”_  
+Never: _“This looks like an app with a browser inside.”_

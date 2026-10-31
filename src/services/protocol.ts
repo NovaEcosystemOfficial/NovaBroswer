@@ -6,6 +6,7 @@ export type NovaPageId =
   | 'history'
   | 'bookmarks'
   | 'workspace'
+  | 'gx'
   | 'cloud'
   | 'docs'
   | 'ai'
@@ -27,6 +28,7 @@ export const NOVA_PAGES: Record<NovaPageId, NovaPageDefinition> = {
   history: { id: 'history', title: 'History', path: 'history' },
   bookmarks: { id: 'bookmarks', title: 'Bookmarks', path: 'bookmarks' },
   workspace: { id: 'workspace', title: 'Workspace', path: 'workspace' },
+  gx: { id: 'gx', title: 'GX Control', path: 'gx' },
   cloud: { id: 'cloud', title: 'NovaCloud', path: 'cloud' },
   docs: { id: 'docs', title: 'NovaDocs', path: 'docs' },
   ai: { id: 'ai', title: 'Ryuk AI', path: 'ai' },
@@ -61,7 +63,11 @@ export function parseUrl(url: string): ParsedUrl {
   if (!href) return { kind: 'invalid', href }
 
   if (isNovaUrl(href)) {
-    const path = href.replace(/^nova:\/\//i, '').split(/[/?#]/)[0]?.toLowerCase() ?? ''
+    const path =
+      href
+        .replace(/^nova:\/\//i, '')
+        .split(/[/?#]/)[0]
+        ?.toLowerCase() ?? ''
     const page = (Object.values(NOVA_PAGES).find((entry) => entry.path === path)?.id ??
       null) as NovaPageId | null
 

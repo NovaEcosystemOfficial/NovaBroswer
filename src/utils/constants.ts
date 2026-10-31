@@ -15,6 +15,7 @@ export const NOVA_COLORS = {
   accent: '#7C8CFF',
   accentSoft: '#6EE7FF',
   accentWarm: '#C084FC',
+  gx: '#FF2D78',
   success: '#34D399',
   warning: '#FBBF24',
   danger: '#F87171',

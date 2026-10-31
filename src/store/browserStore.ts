@@ -1,7 +1,13 @@
 import { create } from 'zustand'
 import type { BrowserState, BrowserTab } from '@/types'
 import { createId } from '@/utils/cn'
-import { getTitleForUrl, isNovaUrl, normalizeInputUrl, parseUrl, toNovaUrl } from '@/services/protocol'
+import {
+  getTitleForUrl,
+  isNovaUrl,
+  normalizeInputUrl,
+  parseUrl,
+  toNovaUrl,
+} from '@/services/protocol'
 import { guestApi } from '@/services/guestBridge'
 import { downloadApi } from '@/services/downloadBridge'
 import {
@@ -16,6 +22,12 @@ import {
   saveSession,
   type BookmarkEntry,
 } from '@/services/storage'
+import {
+  DEFAULT_GX_LIMITS,
+  loadGxLimits,
+  normalizeGxLimits,
+  saveGxLimits,
+} from '@/services/gxLimits'
 
 function createTab(url: string, isActive = true): BrowserTab {
   return {
@@ -80,6 +92,7 @@ export const useBrowserStore = create<BrowserState>((set, get) => ({
   history: [],
   bookmarks: [],
   downloads: [],
+  gxLimits: { ...DEFAULT_GX_LIMITS },
   hydrated: false,
 
   getActiveTab: () => get().tabs.find((tab) => tab.isActive),
@@ -91,6 +104,7 @@ export const useBrowserStore = create<BrowserState>((set, get) => ({
     const bookmarks = loadBookmarks()
     const downloads = loadDownloads()
     const session = loadSession()
+    const gxLimits = loadGxLimits()
 
     let tabs = [createTab(initialUrl, true)]
     let addressDraft = initialUrl
@@ -121,12 +135,20 @@ export const useBrowserStore = create<BrowserState>((set, get) => ({
       history,
       bookmarks,
       downloads,
+      gxLimits,
       tabs,
       addressDraft,
       hydrated: true,
     })
 
+    void guestApi.setGxLimits(gxLimits)
     void syncGuestForTab(tabs.find((tab) => tab.isActive))
+  },
+
+  setGxLimits: (partial) => {
+    const gxLimits = saveGxLimits(normalizeGxLimits({ ...get().gxLimits, ...partial }))
+    set({ gxLimits })
+    void guestApi.setGxLimits(gxLimits)
   },
 
   setActiveTab: (id) => {
@@ -214,9 +236,7 @@ export const useBrowserStore = create<BrowserState>((set, get) => ({
     }
 
     const title = getTitleForUrl(href)
-    const history = nextIsWeb
-      ? recordWebHistory(get().history, href, title)
-      : get().history
+    const history = nextIsWeb ? recordWebHistory(get().history, href, title) : get().history
 
     const tabs = get().tabs.map((tab) =>
       tab.isActive
@@ -278,10 +298,7 @@ export const useBrowserStore = create<BrowserState>((set, get) => ({
     const nextTitle = update.title || previous?.title || getTitleForUrl(nextUrl)
 
     const shouldRecord =
-      !update.isLoading &&
-      Boolean(nextUrl) &&
-      !isNovaUrl(nextUrl) &&
-      previous?.url !== nextUrl
+      !update.isLoading && Boolean(nextUrl) && !isNovaUrl(nextUrl) && previous?.url !== nextUrl
 
     const history = shouldRecord
       ? recordWebHistory(get().history, nextUrl, nextTitle)

@@ -8,6 +8,7 @@ import { SettingsPage } from '@/pages/internal/SettingsPage'
 import { CloudPage } from '@/pages/internal/CloudPage'
 import { DocsPage } from '@/pages/internal/DocsPage'
 import { AiPage } from '@/pages/internal/AiPage'
+import { GxControlPage } from '@/pages/internal/GxControlPage'
 import { InternalStubPage } from '@/pages/internal/InternalStubPage'
 import { NOVA_PAGES } from '@/services/protocol'
 
@@ -28,6 +29,8 @@ export function InternalPageHost({ page }: InternalPageHostProps) {
       return <DownloadsPage />
     case 'workspace':
       return <WorkspacePage />
+    case 'gx':
+      return <GxControlPage />
     case 'settings':
       return <SettingsPage />
     case 'cloud':

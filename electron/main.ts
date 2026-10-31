@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url'
 import {
   attachGuest,
   destroyGuest,
+  getGuestGxLimits,
   guestGoBack,
   guestGoForward,
   guestReload,
@@ -13,8 +14,10 @@ import {
   onGuestNavigation,
   onGuestOpenUrl,
   setGuestBounds,
+  setGuestGxLimits,
   setGuestHostWindow,
   showGuest,
+  type GuestGxLimits,
 } from './guest'
 import {
   cancelDownload,
@@ -27,9 +30,7 @@ import {
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
 process.env.DIST = join(__dirname, '../dist')
-process.env.VITE_PUBLIC = app.isPackaged
-  ? process.env.DIST
-  : join(__dirname, '../public')
+process.env.VITE_PUBLIC = app.isPackaged ? process.env.DIST : join(__dirname, '../public')
 
 let mainWindow: BrowserWindow | null = null
 
@@ -122,10 +123,7 @@ function registerGuestIpc(): void {
 
   ipcMain.handle(
     'guest:set-bounds',
-    (
-      _event,
-      bounds: { x: number; y: number; width: number; height: number },
-    ) => {
+    (_event, bounds: { x: number; y: number; width: number; height: number }) => {
       setGuestBounds({
         x: Math.round(bounds.x),
         y: Math.round(bounds.y),
@@ -146,6 +144,12 @@ function registerGuestIpc(): void {
       win.webContents.send('guest:open-url', request)
     }
   })
+
+  ipcMain.handle('guest:set-gx-limits', (_event, limits: GuestGxLimits) => {
+    return setGuestGxLimits(limits)
+  })
+
+  ipcMain.handle('guest:get-gx-limits', () => getGuestGxLimits())
 }
 
 function registerDownloadIpc(): void {

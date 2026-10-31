@@ -11,7 +11,7 @@ import {
 } from 'lucide-react'
 import { IconButton } from '@/components/IconButton'
 import { useBrowserStore } from '@/store/browserStore'
-import { isNovaUrl } from '@/services/protocol'
+import { isNovaUrl, toNovaUrl } from '@/services/protocol'
 import { cn } from '@/utils/cn'
 
 export function Toolbar() {
@@ -27,6 +27,7 @@ export function Toolbar() {
   const stopLoading = useBrowserStore((s) => s.stopLoading)
   const toggleBookmarkForActiveTab = useBrowserStore((s) => s.toggleBookmarkForActiveTab)
   const isBookmarked = useBrowserStore((s) => s.isBookmarked)
+  const openInternalPage = useBrowserStore((s) => s.openInternalPage)
   const activeTab = useBrowserStore((s) => s.tabs.find((t) => t.isActive))
   const isLoading = Boolean(activeTab?.isLoading)
   const canBookmark = Boolean(activeTab && !isNovaUrl(activeTab.url))
@@ -78,8 +79,8 @@ export function Toolbar() {
           }}
           onBlur={() => setAddressFocused(false)}
           className={cn(
-            'h-6 w-full rounded-full bg-[#1a1f2a] px-3.5 text-[12px] text-nova-text outline-none',
-            'ring-1 ring-white/[0.06] placeholder:text-nova-faint',
+            'text-nova-text h-6 w-full rounded-full bg-[#1a1f2a] px-3.5 text-[12px] outline-none',
+            'placeholder:text-nova-faint ring-1 ring-white/[0.06]',
             'focus:ring-white/15',
           )}
           placeholder="Search or enter address"
@@ -94,24 +95,21 @@ export function Toolbar() {
         onClick={toggleBookmarkForActiveTab}
         className={bookmarked ? 'text-nova-cyan' : undefined}
       >
-        <Star
-          className={cn('h-3.5 w-3.5', bookmarked && 'fill-current')}
-          strokeWidth={1.6}
-        />
+        <Star className={cn('h-3.5 w-3.5', bookmarked && 'fill-current')} strokeWidth={1.6} />
       </IconButton>
       <IconButton label="New tab" onClick={() => addTab()}>
         <Plus className="h-3.5 w-3.5" strokeWidth={1.6} />
       </IconButton>
-      <IconButton label="Profile">
+      <IconButton label="Profile" onClick={() => openInternalPage(toNovaUrl('settings'))}>
         <UserRound className="h-3.5 w-3.5" strokeWidth={1.6} />
       </IconButton>
-      <IconButton label="Ryuk">
+      <IconButton label="Ryuk" onClick={() => openInternalPage(toNovaUrl('ai'))}>
         <Sparkles className="h-3.5 w-3.5" strokeWidth={1.6} />
       </IconButton>
 
       {isLoading && (
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[1.5px] overflow-hidden">
-          <div className="h-full w-1/3 animate-[nova-load_1s_ease-in-out_infinite] bg-nova-cyan/80" />
+          <div className="bg-nova-gx/80 h-full w-1/3 animate-[nova-load_1s_ease-in-out_infinite]" />
         </div>
       )}
     </div>
